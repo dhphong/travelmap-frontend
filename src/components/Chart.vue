@@ -5,9 +5,9 @@
                  :is-full-page="fullPage"
         ></loading>
         <svg :width="width" :height="height" ref="worldMap">
-<!--            <g style="transform: translate(0, 10px)">-->
-<!--                <path :d="line" />-->
-<!--            </g>-->
+            <!--            <g style="transform: translate(0, 10px)">-->
+            <!--                <path :d="line" />-->
+            <!--            </g>-->
         </svg>
     </div>
 </template>
@@ -18,8 +18,8 @@
     import 'vue-loading-overlay/dist/vue-loading.css'
 
     export default {
-        name: "PackChart",
-        props: ["tweetData"],
+        name: 'PackChart',
+        props: ['tweetData'],
         data() {
             return {
                 height: 800,
@@ -30,11 +30,11 @@
                 layer: {
                     g: null,
                     effectLayer: null,
-                    mapLayer: null,
+                    mapLayer: null
 
                 },
                 isLoading: false
-            };
+            }
         },
         components: {
             Loading
@@ -51,14 +51,14 @@
 
                     let projection = d3.geoMercator()
                         .scale((this.width + 1) / 2 / Math.PI)
-                        .translate([this.width/2, this.height/2])
-                        // .precision(.1)
-                        // .scale(100).translate([-500, 750])
+                        .translate([this.width / 2, this.height / 2])
+                    // .precision(.1)
+                    // .scale(100).translate([-500, 750])
                     this.path = d3.geoPath(projection)
 
                     // test area
 
-                    this.color = d3.scaleLinear().domain([1,20]).clamp(true).range(['#fff', '#409A99'])
+                    this.color = d3.scaleLinear().domain([1, 20]).clamp(true).range(['#fff', '#409A99'])
 
                     let svg = d3.select(this.$refs.worldMap)
 
@@ -143,13 +143,13 @@
                 }
 
                 this.layer.mapLayer.selectAll('path')
-                    .style('fill', (d) => (this.centered && d === this.centered) ? '#d5708b': this.fillFn(d))
+                    .style('fill', (d) => (this.centered && d === this.centered) ? '#d5708b' : this.fillFn(d))
 
                 this.layer.g.transition()
                     .duration(750)
-                    .attr('transform', 'translate(' + this.width / 2 + ',' + this.height / 2 + ')scale(' + k + ')translate(' + -x +',' + -y + ')')
+                    .attr('transform', 'translate(' + this.width / 2 + ',' + this.height / 2 + ')scale(' + k + ')translate(' + -x + ',' + -y + ')')
             }
-        },
+        }
     }
 </script>
 
@@ -157,6 +157,7 @@
     svg {
         margin: 25px;
     }
+
     path {
         fill: none;
         stroke: #76BF8A;
