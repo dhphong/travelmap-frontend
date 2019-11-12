@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-/* Layout */
 import Layout from '@/layout'
-/* Router Modules */
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
@@ -72,6 +70,7 @@ export const constantRoutes = [
         path: '/',
         component: Layout,
         redirect: '/dashboard',
+        hidden: true,
         children: [
             {
                 path: 'dashboard',
@@ -84,6 +83,7 @@ export const constantRoutes = [
     {
         path: '/documentation',
         component: Layout,
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -97,6 +97,7 @@ export const constantRoutes = [
         path: '/guide',
         component: Layout,
         redirect: '/guide/index',
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -119,7 +120,86 @@ export const constantRoutes = [
                 meta: {title: 'Profile', icon: 'user', noCache: true}
             }
         ]
+    },
+    {
+        path: '/maps',
+        component: Layout,
+        redirect: '/maps/index',
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/maps/index'),
+                name: 'Maps',
+                meta: {title: 'Maps', icon: 'map'}
+            }
+        ]
+    },
+    {
+        path: '/search',
+        component: Layout,
+        redirect: '/search/index',
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/search/index'),
+                name: 'Search',
+                meta: {title: 'Search', icon: 'search'}
+            }
+        ]
+    },
+    {
+        path: '/services',
+        component: Layout,
+        redirect: '/services/index',
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/services/index'),
+                name: 'Services',
+                meta: {title: 'Services', icon: 'shopping'}
+            }
+        ]
+    },
+    {
+        path: '/plan',
+        component: Layout,
+        redirect: '/plan/index',
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/plan/index'),
+                name: 'Plan',
+                meta: {title: 'Plan', icon: 'tree-table'}
+            }
+        ]
+    },
+    {
+        path: '/share',
+        component: Layout,
+        redirect: '/share/index',
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/share/index'),
+                name: 'Share',
+                meta: {title: 'Share', icon: 'share'}
+            }
+        ]
+    },
+    {
+        path: '/chat',
+        component: Layout,
+        redirect: '/chat/index',
+        children: [
+            {
+                path: 'index',
+                component: () => import('@/views/chat/index'),
+                name: 'Chat',
+                meta: {title: 'Chat', icon: 'wechat'}
+            }
+        ]
     }
+
 ]
 
 /**
@@ -132,6 +212,7 @@ export const asyncRoutes = [
         component: Layout,
         redirect: '/permission/page',
         alwaysShow: true, // will always show the root menu
+        hidden: true,
         name: 'Permission',
         meta: {
             title: 'Permission',
@@ -172,6 +253,8 @@ export const asyncRoutes = [
     {
         path: '/icon',
         component: Layout,
+        hidden: true,
+        redirect: '/icon/index',
         children: [
             {
                 path: 'index',
@@ -193,6 +276,7 @@ export const asyncRoutes = [
         component: Layout,
         redirect: '/example/list',
         name: 'Example',
+        hidden: true,
         meta: {
             title: 'Example',
             icon: 'example'
@@ -223,6 +307,7 @@ export const asyncRoutes = [
     {
         path: '/tab',
         component: Layout,
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -238,6 +323,7 @@ export const asyncRoutes = [
         component: Layout,
         redirect: 'noRedirect',
         name: 'ErrorPages',
+        hidden: true,
         meta: {
             title: 'Error Pages',
             icon: '404'
@@ -261,6 +347,7 @@ export const asyncRoutes = [
     {
         path: '/error-log',
         component: Layout,
+        hidden: true,
         children: [
             {
                 path: 'log',
@@ -275,6 +362,7 @@ export const asyncRoutes = [
         path: '/excel',
         component: Layout,
         redirect: '/excel/export-excel',
+        hidden: true,
         name: 'Excel',
         meta: {
             title: 'Excel',
@@ -313,6 +401,7 @@ export const asyncRoutes = [
         component: Layout,
         redirect: '/zip/download',
         alwaysShow: true,
+        hidden: true,
         name: 'Zip',
         meta: {title: 'Zip', icon: 'zip'},
         children: [
@@ -329,6 +418,7 @@ export const asyncRoutes = [
         path: '/pdf',
         component: Layout,
         redirect: '/pdf/index',
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -340,13 +430,14 @@ export const asyncRoutes = [
     },
     {
         path: '/pdf/download',
+        hidden: true,
         component: () => import('@/views/pdf/download'),
-        hidden: true
     },
 
     {
         path: '/theme',
         component: Layout,
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -360,6 +451,7 @@ export const asyncRoutes = [
     {
         path: '/clipboard',
         component: Layout,
+        hidden: true,
         children: [
             {
                 path: 'index',
@@ -375,7 +467,7 @@ export const asyncRoutes = [
         component: Layout,
         children: [
             {
-                path: 'https://github.com/PanJiaChen/vue-element-admin',
+                path: 'https://github.com/dhphong/travelmap-frontend',
                 meta: {title: 'External Link', icon: 'link'}
             }
         ]
