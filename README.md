@@ -1,4 +1,4 @@
-# world-map
+# Travel Map
 
 ## Project setup
 ```
