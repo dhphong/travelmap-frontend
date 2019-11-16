@@ -1,9 +1,10 @@
-import {getInfo, login, logout} from '@/api/user'
-import {getToken, removeToken, setToken} from '@/utils/auth'
+import {getInfo, login, refreshToken, register} from '@/api/user'
+import {getRefreshToken, getToken, removeRefreshToken, removeToken, setRefreshToken, setToken} from '@/utils/auth'
 import router, {resetRouter} from '@/router'
 
 const state = {
     token: getToken(),
+    refreshToken: getRefreshToken(),
     name: '',
     avatar: '',
     introduction: '',
@@ -13,6 +14,9 @@ const state = {
 const mutations = {
     SET_TOKEN: (state, token) => {
         state.token = token
+    },
+    SET_REFRESH_TOKEN: (state, token) => {
+        state.refreshToken = token
     },
     SET_INTRODUCTION: (state, introduction) => {
         state.introduction = introduction
@@ -35,10 +39,33 @@ const actions = {
         return new Promise((resolve, reject) => {
             login({username: username.trim(), password: password}).then(response => {
                 const {data} = response
-                commit('SET_TOKEN', data.token)
-                setToken(data.token)
+                console.log(response)
+                const {access_token, refresh_token} = data
+                commit('SET_TOKEN', access_token)
+                setToken(access_token)
+                commit('SET_REFRESH_TOKEN', refresh_token)
+                setRefreshToken(refresh_token)
                 resolve()
             }).catch(error => {
+                console.log('Login Error: ', error)
+                reject(error)
+            })
+        })
+    },
+
+    register({commit}, data) {
+        return new Promise((resolve, reject) => {
+            register(data).then(response => {
+                const {data} = response
+                console.log(response)
+                const {access_token, refresh_token} = data
+                commit('SET_TOKEN', access_token)
+                setToken(access_token)
+                commit('SET_REFRESH_TOKEN', refresh_token)
+                setRefreshToken(refresh_token)
+                resolve()
+            }).catch(error => {
+                console.log('Login Error: ', error)
                 reject(error)
             })
         })
@@ -73,32 +100,36 @@ const actions = {
     },
 
     // user logout
-    logout({commit, state, dispatch}) {
-        return new Promise((resolve, reject) => {
-            logout(state.token).then(() => {
-                commit('SET_TOKEN', '')
-                commit('SET_ROLES', [])
-                removeToken()
-                resetRouter()
+    logout({commit, dispatch}) {
+        return new Promise((resolve) => {
+            commit('SET_TOKEN', '')
+            commit('SET_REFRESH_TOKEN', '')
+            commit('SET_ROLES', [])
+            removeToken()
+            removeRefreshToken()
+            resetRouter()
 
-                // reset visited views and cached views
-                // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-                dispatch('tagsView/delAllViews', null, {root: true})
+            // reset visited views and cached views
+            // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+            dispatch('tagsView/delAllViews', null, {root: true})
 
-                resolve()
-            }).catch(error => {
-                reject(error)
-            })
+            resolve()
         })
     },
 
     // remove token
     resetToken({commit}) {
-        return new Promise(resolve => {
-            commit('SET_TOKEN', '')
-            commit('SET_ROLES', [])
-            removeToken()
-            resolve()
+        return new Promise((resolve, reject) => {
+            refreshToken().then(response => {
+                const {data} = response
+                const {access_token} = data
+                commit('SET_TOKEN', access_token)
+                setToken(access_token)
+                resolve()
+            }).catch(error => {
+                console.log('Login Error: ', error)
+                reject(error)
+            })
         })
     },
 

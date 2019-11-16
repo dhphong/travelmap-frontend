@@ -1,18 +1,36 @@
 import request from '@/utils/request'
+import axios from 'axios'
+import {getRefreshToken} from '@/utils/auth'
 
 export function login(data) {
     return request({
-        url: '/user/login',
+        url: '/login',
         method: 'post',
         data
     })
 }
 
-export function getInfo(token) {
+export function register(data) {
+    return request({
+        url: '/registration',
+        method: 'post',
+        data
+    })
+}
+
+
+export function getInfo() {
     return request({
         url: '/user/info',
-        method: 'get',
-        params: {token}
+        method: 'get'
+    })
+}
+
+export function refreshToken() {
+    return axios.post( process.env.VUE_APP_BASE_API + '/token/refresh',{}, {
+        headers: {
+            Authorization: 'Bearer ' + getRefreshToken(),
+        }
     })
 }
 

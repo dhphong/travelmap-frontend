@@ -1,19 +1,19 @@
 <template>
     <div class="login-container">
-        <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on"
+        <el-form ref="loginForm" :model="registerForm" :rules="registerRules" class="login-form" autocomplete="on"
                  label-position="left">
 
             <div class="title-container">
-                <h3 class="title">Login</h3>
+                <h3 class="title">Create your account</h3>
             </div>
 
             <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user"/>
-        </span>
+                <span class="svg-container">
+                    <svg-icon icon-class="user"/>
+                </span>
                 <el-input
                         ref="username"
-                        v-model="loginForm.username"
+                        v-model="registerForm.username"
                         placeholder="Username"
                         name="username"
                         type="text"
@@ -21,16 +21,57 @@
                         autocomplete="on"
                 />
             </el-form-item>
-
+            <el-form-item prop="email">
+                <span class="svg-container">
+                    <svg-icon icon-class="email"/>
+                </span>
+                <el-input
+                        ref="email"
+                        v-model="registerForm.email"
+                        placeholder="Email"
+                        name="email"
+                        type="email"
+                        tabindex="1"
+                        autocomplete="on"
+                />
+            </el-form-item>
+            <el-form-item prop="firstname">
+                <span class="svg-container">
+                    <svg-icon icon-class="edit"/>
+                </span>
+                <el-input
+                        ref="firstname"
+                        v-model="registerForm.firstname"
+                        placeholder="First name"
+                        name="firstname"
+                        type="text"
+                        tabindex="1"
+                        autocomplete="on"
+                />
+            </el-form-item>
+            <el-form-item prop="lastname">
+                <span class="svg-container">
+                    <svg-icon icon-class="edit"/>
+                </span>
+                <el-input
+                        ref="lastname"
+                        v-model="registerForm.lastname"
+                        placeholder="Last name"
+                        name="lastname"
+                        type="text"
+                        tabindex="1"
+                        autocomplete="on"
+                />
+            </el-form-item>
             <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
                 <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password"/>
-          </span>
+                    <span class="svg-container">
+                        <svg-icon icon-class="password"/>
+                    </span>
                     <el-input
                             :key="passwordType"
                             ref="password"
-                            v-model="loginForm.password"
+                            v-model="registerForm.password"
                             :type="passwordType"
                             placeholder="Password"
                             name="password"
@@ -38,25 +79,42 @@
                             autocomplete="on"
                             @keyup.native="checkCapslock"
                             @blur="capsTooltip = false"
-                            @keyup.enter.native="handleLogin"
+                            @keyup.enter.native="handleRegister"
                     />
                     <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"/>
-          </span>
+                        <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"/>
+                    </span>
                 </el-form-item>
             </el-tooltip>
+            <el-form-item prop="retypePassword">
+                    <span class="svg-container">
+                        <svg-icon icon-class="password"/>
+                    </span>
+                <el-input
+                        :key="retypePasswordType"
+                        ref="password"
+                        v-model="registerForm.retypePassword"
+                        :type="retypePasswordType"
+                        placeholder="Confirm Password"
+                        name="retypePassword"
+                        tabindex="3"
+                        autocomplete="on"
+                        @keyup.native="checkCapslock"
+                        @blur="capsTooltip = false"
+                        @keyup.enter.native="handleRegister"
+                />
+                <span class="show-pwd" @click="showRetypePwd">
+                        <svg-icon :icon-class="retypePasswordType === 'password' ? 'eye' : 'eye-open'"/>
+                    </span>
+            </el-form-item>
 
             <div style="position: relative; display: flex; flex-direction: row; justify-content: space-between; padding-bottom: 20px">
-                <router-link :to="{'name': 'login'}" style="color: white">Forget password?</router-link>
-                <router-link :to="{'name': 'register'}" style="color: white">Create Account</router-link>
-                <!--                <el-button class="thirdparty-button" type="primary" @click="showDialog=true">-->
-                <!--                    Or connect with-->
-                <!--                </el-button>-->
+                <router-link :to="{'name': 'login'}" style="color: white">Sign in instead</router-link>
             </div>
-
             <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"
-                       @click.native.prevent="handleLogin">Login
+                       @click.native.prevent="handleRegister">Register
             </el-button>
+
 
         </el-form>
 
@@ -94,16 +152,35 @@
                     callback()
                 }
             }
+            const validateRetypePassword = (rule, value, callback) => {
+                if (value !== this.registerForm.password) {
+                    callback(new Error('Those passwords did\'t match. Try again'))
+                } else {
+                    callback()
+                }
+            }
             return {
-                loginForm: {
+                registerForm: {
                     username: '',
-                    password: ''
+                    firstname: '',
+                    lastname: '',
+                    password: '',
+                    retypePassword: '',
+                    email: '',
                 },
-                loginRules: {
+                registerRules: {
                     username: [{required: true, trigger: 'blur', validator: validateUsername}],
-                    password: [{required: true, trigger: 'blur', validator: validatePassword}]
+                    password: [{required: true, trigger: 'blur', validator: validatePassword}],
+                    retypePassword: [{required: true, trigger: 'blue', validator: validateRetypePassword}],
+                    firstname: [{ required: true, message: 'Please input first name', trigger: 'blur' }],
+                    lastname: [{ required: true, message: 'Please last last name', trigger: 'blur' }],
+                    email: [
+                        { required: true, message: 'Please input email address', trigger: 'blur' },
+                        { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+                    ]
                 },
                 passwordType: 'password',
+                retypePasswordType: 'password',
                 capsTooltip: false,
                 loading: false,
                 showDialog: false,
@@ -127,9 +204,9 @@
             // window.addEventListener('storage', this.afterQRScan)
         },
         mounted() {
-            if (this.loginForm.username === '') {
+            if (this.registerForm.username === '') {
                 this.$refs.username.focus()
-            } else if (this.loginForm.password === '') {
+            } else if (this.registerForm.password === '') {
                 this.$refs.password.focus()
             }
         },
@@ -159,11 +236,21 @@
                     this.$refs.password.focus()
                 })
             },
-            handleLogin() {
+            showRetypePwd() {
+                if (this.retypePasswordType === 'password') {
+                    this.retypePasswordType = ''
+                } else {
+                    this.retypePasswordType = 'password'
+                }
+                this.$nextTick(() => {
+                    this.$refs.retypePassword.focus()
+                })
+            },
+            handleRegister() {
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
                         this.loading = true
-                        this.$store.dispatch('user/login', this.loginForm)
+                        this.$store.dispatch('user/register', this.registerForm)
                             .then(() => {
                                 this.$router.push({path: this.redirect || '/', query: this.otherQuery})
                                 this.loading = false

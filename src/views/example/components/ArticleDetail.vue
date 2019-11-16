@@ -16,7 +16,7 @@
 
             <div class="createPost-main-container">
                 <el-row>
-                    <Warning/>
+<!--                    <Warning/>-->
 
                     <el-col :span="24">
                         <el-form-item style="margin-bottom: 40px;" prop="title">

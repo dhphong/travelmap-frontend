@@ -49,7 +49,14 @@ export const constantRoutes = [
     {
         path: '/login',
         component: () => import('@/views/login/index'),
-        hidden: true
+        hidden: true,
+        name: 'login'
+    },
+    {
+        path: '/register',
+        component: () => import('@/views/register/index'),
+        hidden: true,
+        name: 'register'
     },
     {
         path: '/auth-redirect',
@@ -67,18 +74,23 @@ export const constantRoutes = [
         hidden: true
     },
     {
-        path: '/',
+        path: '/dashboard',
         component: Layout,
-        redirect: '/dashboard',
+        redirect: '/dashboard/index',
         hidden: true,
         children: [
             {
-                path: 'dashboard',
+                path: 'index',
                 component: () => import('@/views/dashboard/index'),
                 name: 'Dashboard',
                 meta: {title: 'Dashboard', icon: 'dashboard', affix: true}
             }
         ]
+    },
+    {
+        path: '/',
+        redirect: '/maps/index',
+        hidden: true
     },
     {
         path: '/documentation',
@@ -183,6 +195,12 @@ export const constantRoutes = [
                 component: () => import('@/views/share/index'),
                 name: 'Share',
                 meta: {title: 'Share', icon: 'share'}
+            },
+            {
+                path: 'detail/:shareid*',
+                hidden: 'true',
+                component: () => import('@/views/blog/index'),
+                meta: {title: 'Share Post'}
             }
         ]
     },
@@ -199,7 +217,6 @@ export const constantRoutes = [
             }
         ]
     }
-
 ]
 
 /**
